@@ -1,0 +1,93 @@
+# config/scenarios/presale_config.yaml
+# Configuration for the Presale Bot scenario
+
+scenario: presale
+bot_name: Priya
+description: >
+  Presale bot that engages prospective customers, qualifies leads,
+  and schedules follow-up consultations with the sales team.
+
+# Language settings
+languages:
+  primary: en
+  secondary: hi
+  auto_detect: true
+  confirmation_on_detect: false   # set true to ask user to confirm detected language
+
+# TTS settings
+tts:
+  provider: elevenlabs              # elevenlabs | sarvam | google
+  voice_id: TX3LPaxmHKxFdv7VOQHJ  # override with ELEVENLABS_VOICE_ID env var
+  model_id: eleven_turbo_v2_5
+  voice_settings:
+    stability: 0.55
+    similarity_boost: 0.80
+    style: 0.25
+    use_speaker_boost: true
+  hindi_voice_id: null              # if set, used for Hindi output instead of primary voice
+  hindi_provider: elevenlabs        # elevenlabs | sarvam
+
+# STT settings
+stt:
+  provider: deepgram
+  model: nova-3
+  language: multi
+  detect_language: true
+  smart_format: true
+  interim_results: true
+
+# LLM settings
+llm:
+  provider: openai
+  model: gpt-4o
+  temperature: 0.7
+  max_tokens: 300
+
+# Performance targets
+performance:
+  max_end_to_end_latency_ms: 2500
+  max_stt_latency_ms: 800
+  max_llm_latency_ms: 1200
+  max_tts_latency_ms: 500
+
+# Scope enforcement
+scope:
+  out_of_scope_redirect_en: >
+    That's a great question! However, pricing and commercial details are best
+    discussed directly with our sales team who can tailor a proposal specifically
+    for your needs. I can schedule a call with the right person for you. Shall I do that?
+  out_of_scope_redirect_hi: >
+    Bahut accha sawaal hai! Lekin pricing aur commercial details ke baare mein
+    hamare sales team aapko zyada sahi tarike se bata payenge.
+    Kya main aapke liye unke saath ek meeting schedule kar sakta hoon?
+
+# Qualifying questions (asked naturally during conversation)
+qualifying_questions:
+  - "Could you tell me a bit about your company and the industry you operate in?"
+  - "How large is your team or customer base?"
+  - "What specific challenges are you currently facing?"
+  - "Are you using any similar solutions currently?"
+  - "What is your timeline for evaluating new solutions?"
+
+# Meeting scheduling
+scheduling:
+  enabled: true
+  collect_fields:
+    - preferred_day
+    - preferred_time
+    - timezone
+    - email
+  confirmation_message_en: >
+    Wonderful! I'll have our team send you a calendar invite shortly.
+    Is there anything else I can help you with before then?
+  confirmation_message_hi: >
+    Bahut accha! Hamare team aapko jald hi calendar invite bhejenge.
+    Kya aur kuch hai jo main aapki madad kar sakta hoon?
+
+# Logging
+logging:
+  level: INFO
+  log_conversations: true
+  log_dir: logs/
+  include_transcripts: true
+  include_metadata: true
